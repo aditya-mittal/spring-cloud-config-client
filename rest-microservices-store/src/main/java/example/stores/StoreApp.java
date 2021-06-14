@@ -15,16 +15,18 @@
  */
 package example.stores;
 
+import example.stores.rest.model.PropertyResponse;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -33,6 +35,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -70,6 +73,26 @@ public class StoreApp extends RepositoryRestConfigurerAdapter {
             Page<Store> all = repository.findAll(new PageRequest(0, 10));
             return all.getContent();
         }
+    }
+
+    @Controller
+    @RefreshScope
+    public class MyRestController {
+
+      private String propertyA;
+      private String propertyB;
+
+      @Autowired
+      public MyRestController(@Value("${stores.a}") String propertyA, @Value("${stores.b}")String propertyB) {
+        this.propertyA = propertyA;
+        this.propertyB = propertyB;
+      }
+
+      @GetMapping(value = "/properties", produces = "application/json")
+      @ResponseBody
+      public PropertyResponse getProperty(final HttpServletRequest request) {
+        return new PropertyResponse(this.propertyA, this.propertyB);
+      }
     }
     
     @Configuration

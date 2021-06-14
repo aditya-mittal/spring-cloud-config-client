@@ -5,6 +5,10 @@ management:
   security:
     enabled: false
 
+stores:
+    a: ab
+    b: yz
+
 endpoints:
   restart:
     enabled: true
@@ -14,19 +18,14 @@ endpoints:
     sensitive: false
 
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   data:
     mongodb:
       uri: ${vcap.services.${PREFIX:}mongodb.credentials.uri:mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/stores}
-  rabbitmq:
-    addresses: ${vcap.services.${PREFIX:}rabbitmq.credentials.uri:amqp://${RABBITMQ_HOST:localhost}:${RABBITMQ_PORT:5672}}
-
-eureka:
-  instance:
-    leaseRenewalIntervalInSeconds: 10
-    metadataMap:
-      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
-  client:
-    registryFetchIntervalSeconds: 5
 
 logging:
   level:

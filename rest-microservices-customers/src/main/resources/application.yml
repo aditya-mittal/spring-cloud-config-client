@@ -26,8 +26,7 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10
     metadataMap:
-      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
-  client:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${saditya-mittalnt:
     region: default
     registryFetchIntervalSeconds: 5
     availabilityZones: 
