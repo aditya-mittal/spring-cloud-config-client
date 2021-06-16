@@ -16,7 +16,6 @@
 package example.stores;
 
 import example.stores.rest.model.PropertyResponse;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +29,10 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -50,7 +46,7 @@ public class StoreApp extends RepositoryRestConfigurerAdapter {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-        config.exposeIdsFor(Store.class);
+
     }
 
     @PostConstruct
@@ -63,16 +59,7 @@ public class StoreApp extends RepositoryRestConfigurerAdapter {
 
     @Controller
     public static class SimpleStoresController {
-        @Autowired
-        StoreRepository repository;
 
-
-        @RequestMapping("/simple/stores")
-        @ResponseBody
-        List<Store> getStores() {
-            Page<Store> all = repository.findAll(new PageRequest(0, 10));
-            return all.getContent();
-        }
     }
 
     @Controller
