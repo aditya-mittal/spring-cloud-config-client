@@ -1,0 +1,29 @@
+server:
+  port: 8081
+
+management:
+  security:
+    enabled: false
+
+stores:
+    a: ab
+    b: yz
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+spring:
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
